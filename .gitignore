@@ -1,0 +1,6 @@
+__pycache__
+.vscode
+notebooks
+lightning_logs
+.idea
+.mypy_cache/
