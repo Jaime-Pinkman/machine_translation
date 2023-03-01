@@ -1,0 +1,32 @@
+name: Init
+on:
+  push:
+    branches:
+      - master
+jobs:
+  setup:
+    runs-on: ubuntu-latest
+    container:
+      image: python:3.10
+      options: --rm
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Install Poetry
+        run: RUN pip install poetry==1.2.2
+
+      - name: Install dependencies
+        run: poetry install --no-root
+
+  test:
+    runs-on: ubuntu-latest
+    container:
+      image: python:3.10
+      options: --rm
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Run tests
+        run: poetry run pytest
