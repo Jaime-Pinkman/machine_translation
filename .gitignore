@@ -4,3 +4,4 @@ notebooks
 lightning_logs
 .idea
 .mypy_cache/
+.pytest_cache

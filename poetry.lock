@@ -232,6 +232,23 @@ python-versions = ">=3.7"
 
 [[package]]
 name = "torch"
+version = "1.13.0"
+description = "Tensors and Dynamic neural networks in Python with strong GPU acceleration"
+category = "main"
+optional = false
+python-versions = ">=3.7.0"
+
+[package.dependencies]
+typing-extensions = "*"
+
+[package.extras]
+opt-einsum = ["opt-einsum (>=3.3)"]
+
+[package.source]
+type = "url"
+url = "https://download.pytorch.org/whl/torch-1.13.0-cp310-cp310-manylinux2014_aarch64.whl"
+[[package]]
+name = "torch"
 version = "1.13.1"
 description = "Tensors and Dynamic neural networks in Python with strong GPU acceleration"
 category = "main"
@@ -276,7 +293,7 @@ test = ["covdefaults (>=2.2.2)", "coverage-enable-subprocess (>=1)", "coverage (
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.10"
-content-hash = "0f35b0ef018859a4bbe1c2dde96f0f97a3e8293c69f2ab9008df188c58962e90"
+content-hash = "fc6f9aca89cbcf883c935eeb8b8f48216e64755b288f4578f679b28ddb95108f"
 
 [metadata.files]
 attrs = [

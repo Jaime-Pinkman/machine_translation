@@ -8,11 +8,13 @@ packages = [{include = "src"}]
 
 [tool.poetry.dependencies]
 python = "^3.10"
-torch = "^1.13.1"
 pre-commit = "^3.1.1"
 mypy = "^1.0.1"
 pytest = "^7.2.1"
-
+torch = [
+    {markers = "sys_platform == 'darwin'", version="^1.13.1"},
+    {markers = "sys_platform == 'linux'", url="https://download.pytorch.org/whl/torch-1.13.0-cp310-cp310-manylinux2014_aarch64.whl"},
+]
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
