@@ -9,8 +9,16 @@ packages = [{include = "src"}]
 [tool.poetry.dependencies]
 python = "^3.10"
 torch = "^1.13.1"
-
+pre-commit = "^3.1.1"
+mypy = "^1.0.1"
 
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
+
+[tool.flake8]
+ignore = ['E203', 'W503']
+per-file-ignores = [
+    '__init__.py:F401',
+]
+max-line-length = 88
