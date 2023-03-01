@@ -1,0 +1,16 @@
+[tool.poetry]
+name = "machine-translation"
+version = "0.1.0"
+description = ""
+authors = ["Isangulov Marat <marathon.our@gmail.com>"]
+readme = "README.md"
+packages = [{include = "src"}]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+torch = "^1.13.1"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
