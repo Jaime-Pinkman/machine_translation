@@ -1,12 +1,21 @@
 import torch
 from torch import nn
-import torch.nn.functional as F
 
 from .blocks import TransformerBlock
 
 
 class Encoder(nn.Module):
-    def __init__(self, src_vocab_size, embed_size, num_layers, heads, forward_expansion, dropout, device, max_length):
+    def __init__(
+        self,
+        src_vocab_size,
+        embed_size,
+        num_layers,
+        heads,
+        forward_expansion,
+        dropout,
+        device,
+        max_length,
+    ):
         super(Encoder, self).__init__()
         self.embed_size = embed_size
         self.num_layers = num_layers
@@ -30,5 +39,5 @@ class Encoder(nn.Module):
 
         for layer in self.layers:
             out = layer(out, out, out, mask)
-        
+
         return out

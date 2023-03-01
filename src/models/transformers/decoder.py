@@ -1,12 +1,21 @@
 import torch
 from torch import nn
-import torch.nn.functional as F
 
 from .blocks import DecoderBlock
 
 
 class Decoder(nn.Module):
-    def __init__(self, trg_vocab_size, embed_size, num_layers, heads, forward_expansion, dropout, device, max_length):
+    def __init__(
+        self,
+        trg_vocab_size,
+        embed_size,
+        num_layers,
+        heads,
+        forward_expansion,
+        dropout,
+        device,
+        max_length,
+    ):
         super(Decoder, self).__init__()
         self.embed_size = embed_size
         self.device = device
@@ -34,4 +43,3 @@ class Decoder(nn.Module):
         out = self.fc_out(x)
 
         return out
-

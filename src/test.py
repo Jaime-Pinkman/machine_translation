@@ -1,6 +1,4 @@
 import torch
-from torch import nn
-import torch.nn.functional as F
 
 from src.models.transformers import Transformer
 
@@ -17,11 +15,6 @@ if __name__ == "__main__":
     trg_pad_idx = 0
     src_vocab_size = 10
     trg_vocab_size = 10
-    model = Transformer(
-        src_vocab_size, 
-        trg_vocab_size, 
-        src_pad_idx, 
-        device=device
-    )
+    model = Transformer(src_vocab_size, trg_vocab_size, src_pad_idx, device=device)
     out = model(x, trg[:, :-1])
     print(out.shape)
