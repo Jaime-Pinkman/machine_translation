@@ -10,6 +10,9 @@ jobs:
     container:
       image: python:3.10
       options: --rm
+    strategy:
+      matrix:
+        architecture: [arm64]
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
@@ -28,6 +31,9 @@ jobs:
     container:
       image: python:3.10
       options: --rm
+    strategy:
+      matrix:
+        architecture: [arm64]
     needs: setup
     steps:
       - name: Checkout code
