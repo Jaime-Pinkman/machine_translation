@@ -7,9 +7,9 @@ on:
 jobs:
   setup:
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        architecture: [arm64]
+    container:
+      image: python:3.10
+      options: --rm
 
     steps:
       - name: Checkout code
@@ -18,23 +18,8 @@ jobs:
       - name: Install Poetry
         run: pip install poetry==1.2.2
 
-      - name: check
-        run: poetry run python test.py
-
       - name: Install dependencies
         run: poetry install --no-root
-        env:
-          PYTHON_KEYRING_BACKEND: keyring.backends.null.Keyring
-
-  test:
-    runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        architecture: [arm64]
-    needs: setup
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
 
       - name: Run tests
         run: poetry run pytest
