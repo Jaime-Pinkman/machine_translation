@@ -16,6 +16,12 @@ torch = [
     {markers = "sys_platform == 'linux' and platform_machine == 'arm64'", url="https://download.pytorch.org/whl/torch-1.13.0-cp310-cp310-manylinux2014_aarch64.whl"},
     {markers = "sys_platform == 'linux' and platform_machine == 'x86_64'", url="https://download.pytorch.org/whl/cpu/torch-1.13.0%2Bcpu-cp310-cp310-linux_x86_64.whl"},
 ]
+torchtext = "^0.14.1"
+setuptools = "^67.4.0"
+ipykernel = "^6.21.2"
+wheel = "^0.38.4"
+spacy = "^3.5.0"
+wandb = "^0.13.10"
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
