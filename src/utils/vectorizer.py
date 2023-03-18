@@ -41,24 +41,35 @@ class Vectorizer:
         elif self.mode == "tf":
             if self.use_sparse:
                 result = result.tocsr()
-            result = result.multiply(1 / result.sum(1))
+                result = result.multiply(1 / result.sum(1))
+            else:
+                result = result * (1 / result.sum(1))[:, np.newaxis]
 
         elif self.mode == "idf":
             if self.use_sparse:
-                result = result.tocsc()
-            result = (result > 0).astype("float32").multiply(1 / self.vocab.word2freq)
+                result = (
+                    (result > 0).astype("float32").multiply(1 / self.vocab.word2freq)
+                )
+            else:
+                result = (result > 0).astype("float32") * (1 / self.vocab.word2freq)
 
         elif self.mode == "tfidf":
             if self.use_sparse:
                 result = result.tocsr()
-            result = result.multiply(1 / result.sum(1))
-            result = result.multiply(1 / self.vocab.word2freq)
+                result = result.multiply(1 / result.sum(1))
+                result = result.multiply(1 / self.vocab.word2freq)
+            else:
+                result = result * (1 / result.sum(1))[:, np.newaxis]
+                result = result * (1 / self.vocab.word2freq)
 
         elif self.mode == "ltfidf":
             if self.use_sparse:
                 result = result.tocsr()
-            result = np.log(result * (1 / result.sum(1))[:, np.newaxis] + 1)
-            result = result * (1 / self.vocab.word2freq)
+                result = result.multiply(1 / result.sum(1)).log1p()
+                result = result.multiply(1 / self.vocab.word2freq)
+            else:
+                result = np.log(result * (1 / result.sum(1))[:, np.newaxis] + 1)
+                result = result * (1 / self.vocab.word2freq)
 
         if self.scale == "minmax":
             if self.use_sparse:
