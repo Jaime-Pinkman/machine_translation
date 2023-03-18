@@ -46,7 +46,7 @@ class Vocabulary:
         }
 
         sorted_word_counts = sorted(
-            word_counts.items(), reverse=True, key=lambda pair: pair[1]
+            word_counts.items(), reverse=True, key=lambda pair: (pair[1], pair[0])
         )
 
         if self.pad_word is not None:
@@ -71,4 +71,4 @@ class Vocabulary:
         word_df = [
             (key, freq) for key, freq in zip(self.word2id.keys(), self.word2freq)
         ]
-        return sorted(word_df, key=lambda x: (x[1], x[0]))
+        return sorted(word_df, reverse=True, key=lambda x: (x[1], x[0]))

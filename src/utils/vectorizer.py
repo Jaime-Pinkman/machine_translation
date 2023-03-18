@@ -1,5 +1,5 @@
 import numpy as np
-import scipy.sparse
+from scipy import sparse
 
 
 class Vectorizer:
@@ -24,7 +24,7 @@ class Vectorizer:
             raise ValueError("Vectorizer has not been fitted yet.")
         tokenized_texts = self.tokenizer.tokenize_corpus(texts)
         if self.use_sparse:
-            result = scipy.sparse.dok_matrix(
+            result = sparse.dok_matrix(
                 (len(tokenized_texts), len(self.vocab.word2id)), dtype="float32"
             )
         else:
@@ -83,7 +83,8 @@ class Vectorizer:
             result -= result.mean(0)
             result /= result.std(0, ddof=1)
 
-        if self.use_sparse:
+        if self.use_sparse and not isinstance(result, sparse._coo.coo_matrix):
+            result = sparse.dok_matrix(result, dtype="float32")
             result = result.tocsr()
 
         return result
