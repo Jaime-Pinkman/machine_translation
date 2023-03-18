@@ -1,6 +1,7 @@
 __pycache__
 .vscode
 notebooks
+data
 lightning_logs
 .idea
 .mypy_cache/
