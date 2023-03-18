@@ -16,6 +16,9 @@ class Tokenizer:
         all_tokens = self.TOKEN_RE.findall(text)
         return [token for token in all_tokens if len(token) >= self.min_token_size]
 
+    def tokenize_corpus(self, texts):
+        return [self(text) for text in texts]
+
 
 class Vocabulary:
     def __init__(
@@ -30,8 +33,8 @@ class Vocabulary:
 
     def build(self, tokenized_texts):
         word_counts = collections.defaultdict(int)
-
-        for _doc_n, txt in enumerate(tokenized_texts):
+        _doc_n = 0
+        for _doc_n, txt in enumerate(tokenized_texts, start=1):
             unique_text_tokens = set(txt)
             for token in unique_text_tokens:
                 word_counts[token] += 1
@@ -58,7 +61,7 @@ class Vocabulary:
             [cnt / _doc_n for _, cnt in sorted_word_counts], dtype="float32"
         )
 
-    def text_to_token_ids(self, tokenized_texts):
+    def texts_to_token_ids(self, tokenized_texts):
         return [
             [self.word2id[token] for token in text if token in self.word2id]
             for text in tokenized_texts
