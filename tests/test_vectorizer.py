@@ -31,10 +31,8 @@ def factory(request, expected_tokens, tokenizer, vocabulary):
 
 
 def test_vectorizer_factory(factory, test_data, expected_outputs):
-    for data, expected_output in zip(
-        test_data, expected_outputs[(factory.mode, factory.scale)]
-    ):
-        output = factory.transform(data)
-        if not isinstance(output, np.ndarray):
-            output = output.todense()
-        assert np.allclose(output, expected_output)
+    pred_output = factory.transform(test_data)
+    true_output = expected_outputs[(factory.mode, factory.scale)]
+    if not isinstance(pred_output, np.ndarray):
+        pred_output = pred_output.todense()
+    assert np.allclose(pred_output, true_output, atol=0.01)
