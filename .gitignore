@@ -1,6 +1,46 @@
-__pycache__
-.vscode
-notebooks
-lightning_logs
-.idea
+# Ignore .env and .envrc files
+.env
+.envrc
+
+# Ignore Python virtual environments
+venv/
+env/
+ENV/
+
+# Ignore certain directories
+data/
+notebooks/
+
+# Ignore compiled Python files
+*.pyc
+*.pyo
+__pycache__/
+
+# Ignore logs and cache files
+logs/
+cache/
+lightning_logs/
+.pytest_cache/
 .mypy_cache/
+
+# Ignore Jupyter Notebook checkpoints
+.ipynb_checkpoints/
+
+# Ignore VSCode settings
+.vscode/
+
+# Ignore PyCharm settings
+.idea/
+
+# Ignore data files that are too large or proprietary
+*.csv
+*.json
+*.txt
+
+# Ignore compiled binary files
+*.so
+*.pyd
+*.dll
+
+# Ignore backup files
+*~
