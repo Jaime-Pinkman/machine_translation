@@ -1,6 +1,8 @@
 import numpy as np
 from scipy import sparse
 
+from config import EmbeddingMode, ScaleType
+
 
 class VectorizerFactory:
     def __init__(self, vocabulary, mode="ltfidf", scale="minmax", use_sparse=False):
@@ -74,39 +76,43 @@ class SparseVectorizer(BaseVectorizer):
         return sparse.dok_matrix((n_rows, n_cols), dtype="float32")
 
     def _apply_mode(self, result):
-        if self.mode == "bin":
-            result = (result > 0).astype("float32")
+        match self.mode:
+            case EmbeddingMode.BIN.value:
+                result = (result > 0).astype("float32")
 
-        elif self.mode == "tf":
-            result = result.tocsr()
-            result = result.multiply(1 / result.sum(1))
+            case EmbeddingMode.TF.value:
+                result = result.tocsr()
+                result = result.multiply(1 / result.sum(1))
 
-        elif self.mode == "idf":
-            result = (result > 0).astype("float32").multiply(1 / self.vocab.word2freq)
+            case EmbeddingMode.IDF.value:
+                result = (
+                    (result > 0).astype("float32").multiply(1 / self.vocab.word2freq)
+                )
 
-        elif self.mode == "tfidf":
-            result = result.tocsr()
-            result = result.multiply(1 / result.sum(1))
-            result = result.multiply(1 / self.vocab.word2freq)
+            case EmbeddingMode.TFIDF.value:
+                result = result.tocsr()
+                result = result.multiply(1 / result.sum(1))
+                result = result.multiply(1 / self.vocab.word2freq)
 
-        elif self.mode == "ltfidf":
-            result = result.tocsr()
-            result = result.multiply(1 / result.sum(1)).log1p()
-            result = result.multiply(1 / self.vocab.word2freq)
+            case EmbeddingMode.LTFIDF.value:
+                result = result.tocsr()
+                result = result.multiply(1 / result.sum(1)).log1p()
+                result = result.multiply(1 / self.vocab.word2freq)
 
         return result
 
     def _apply_scaling(self, result):
-        if self.scale == "minmax":
-            result = result.tocsc()
-            result -= result.min()
-            result /= result.max() + 1e-6
+        match self.scale:
+            case ScaleType.MINMAX.value:
+                result = result.tocsc()
+                result -= result.min()
+                result /= result.max() + 1e-6
 
-        elif self.scale == "std":
-            result = result.tocsc()
-            result -= result.mean(0)
-            result /= result.std(0, ddof=1)
-            result = sparse.dok_matrix(result, dtype="float32")
+            case ScaleType.STD.value:
+                result = result.tocsc()
+                result -= result.mean(0)
+                result /= result.std(0, ddof=1)
+                result = sparse.dok_matrix(result, dtype="float32")
 
         return result.tocsr()
 
@@ -116,32 +122,34 @@ class DenseVectorizer(BaseVectorizer):
         return np.zeros((n_rows, n_cols))
 
     def _apply_mode(self, result):
-        if self.mode == "bin":
-            result = (result > 0).astype("float32")
+        match self.mode:
+            case EmbeddingMode.BIN.value:
+                result = (result > 0).astype("float32")
 
-        elif self.mode == "tf":
-            result = result * (1 / result.sum(1))[:, np.newaxis]
+            case EmbeddingMode.TF.value:
+                result = result * (1 / result.sum(1))[:, np.newaxis]
 
-        elif self.mode == "idf":
-            result = (result > 0).astype("float32") * (1 / self.vocab.word2freq)
+            case EmbeddingMode.IDF.value:
+                result = (result > 0).astype("float32") * (1 / self.vocab.word2freq)
 
-        elif self.mode == "tfidf":
-            result = result * (1 / result.sum(1))[:, np.newaxis]
-            result = result * (1 / self.vocab.word2freq)
+            case EmbeddingMode.TFIDF.value:
+                result = result * (1 / result.sum(1))[:, np.newaxis]
+                result = result * (1 / self.vocab.word2freq)
 
-        elif self.mode == "ltfidf":
-            result = np.log(result * (1 / result.sum(1))[:, np.newaxis] + 1)
-            result = result * (1 / self.vocab.word2freq)
+            case EmbeddingMode.LTFIDF.value:
+                result = np.log(result * (1 / result.sum(1))[:, np.newaxis] + 1)
+                result = result * (1 / self.vocab.word2freq)
 
         return result
 
     def _apply_scaling(self, result):
-        if self.scale == "minmax":
-            result -= result.min()
-            result /= result.max() + 1e-6
+        match self.scale:
+            case ScaleType.MINMAX.value:
+                result -= result.min()
+                result /= result.max() + 1e-6
 
-        elif self.scale == "std":
-            result -= result.mean(0)
-            result /= result.std(0, ddof=1)
+            case ScaleType.STD.value:
+                result -= result.mean(0)
+                result /= result.std(0, ddof=1)
 
         return result
