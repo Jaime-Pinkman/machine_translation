@@ -2,7 +2,7 @@ import pytest
 
 
 @pytest.fixture
-def test_data():
+def test_data() -> list[str]:
     return [
         "Казнить нельзя, помиловать. Нельзя наказывать.",
         "Казнить, нельзя помиловать. Нельзя освободить.",
@@ -12,7 +12,7 @@ def test_data():
 
 
 @pytest.fixture
-def expected_tokens():
+def expected_tokens() -> list[list[str]]:
     return [
         ["казнить", "нельзя", "помиловать", "нельзя", "наказывать"],
         ["казнить", "нельзя", "помиловать", "нельзя", "освободить"],
@@ -56,7 +56,7 @@ COMBINATIONS = [
 
 
 @pytest.fixture
-def expected_outputs():
+def expected_outputs() -> dict[tuple[str, str | None], list[list[float]]]:
     return {
         ("bin", None): [
             [1.0, 1.0, 0.0, 1.0, 0.0, 0.0, 1.0],
