@@ -1,5 +1,24 @@
 import pytest
 
+from config import VocabularyConfig, TokenizerConfig
+
+
+@pytest.fixture
+def vocab_config() -> VocabularyConfig:
+    return VocabularyConfig(
+        max_size=10000,
+        max_doc_freq=1.0,
+        min_count=1,
+        pad_word=None,
+    )
+
+
+@pytest.fixture
+def tokenizer_config() -> TokenizerConfig:
+    return TokenizerConfig(
+        min_token_size=0,
+    )
+
 
 @pytest.fixture
 def test_data() -> list[str]:

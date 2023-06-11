@@ -1,24 +1,32 @@
 import numpy as np
 import pytest
-from config import tokenizer_config, vocab_config
+
+from config import VocabularyConfig, TokenizerConfig
 from src.models.sentence_classifier.tokenizer import Tokenizer, Vocabulary
 from src.models.sentence_classifier.vectorizer import VectorizerFactory, BaseVectorizer
-
-from tests.test_data import COMBINATIONS, expected_outputs, expected_tokens, test_data
+from tests.test_data import (
+    COMBINATIONS,
+    expected_outputs,
+    expected_tokens,
+    test_data,
+    vocab_config,
+    tokenizer_config,
+)
 
 
 @pytest.fixture
-def tokenizer() -> Tokenizer:
-    tknzr = Tokenizer(**tokenizer_config)
+def tokenizer(tokenizer_config: TokenizerConfig) -> Tokenizer:
+    tknzr = Tokenizer(min_token_size=tokenizer_config.min_token_size)
     return tknzr
 
 
 @pytest.fixture
-def vocabulary() -> Vocabulary:
+def vocabulary(vocab_config: VocabularyConfig) -> Vocabulary:
     vocab = Vocabulary(
-        max_size=int(vocab_config["max_size"]),
-        max_doc_freq=vocab_config["max_doc_freq"],
-        min_count=int(vocab_config["min_count"]),
+        max_size=vocab_config.max_size,
+        max_doc_freq=vocab_config.max_doc_freq,
+        min_count=vocab_config.min_count,
+        pad_word=vocab_config.pad_word,
     )
     return vocab
 
