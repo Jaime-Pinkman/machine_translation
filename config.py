@@ -1,14 +1,20 @@
 from enum import Enum
+from dataclasses import dataclass
 
-vocab_config = {
-    "max_size": 10000,
-    "max_doc_freq": 1,
-    "min_count": 1,
-    "pad_word": None,
-}
-tokenizer_config = {
-    "min_token_size": 0,
-}
+
+@dataclass
+class VocabularyConfig:
+    max_size: int
+    max_doc_freq: float
+    min_count: int
+    pad_word: str | None = None
+    word2id: dict[str, int] | None = None
+    word2freq: dict[str, float] | None = None
+
+
+@dataclass
+class TokenizerConfig:
+    min_token_size: int = 4
 
 
 class EmbeddingMode(Enum):
