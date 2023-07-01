@@ -1,5 +1,6 @@
-from enum import Enum
 from dataclasses import dataclass
+from enum import Enum
+from itertools import product
 
 
 @dataclass
@@ -29,3 +30,9 @@ class ScaleType(Enum):
     MINMAX = "minmax"
     STD = "std"
     NONE = None
+
+
+embedding_modes = [e.value for e in EmbeddingMode]
+scale_types = [s.value for s in ScaleType]
+
+COMBINATIONS = list(product(embedding_modes, scale_types, [False, True]))
