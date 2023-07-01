@@ -1,9 +1,7 @@
 import numpy as np
-import pytest
 
-from config import VocabularyConfig, TokenizerConfig, COMBINATIONS
 from src.models.sentence_classifier.tokenizer import Tokenizer, Vocabulary
-from src.models.sentence_classifier.vectorizer import VectorizerFactory, BaseVectorizer
+from src.models.sentence_classifier.vectorizer import BaseVectorizer
 from tests.data_fixtures import (
     expected_outputs,
     expected_tokens,
@@ -12,11 +10,7 @@ from tests.data_fixtures import (
     vocab_config,
     tokenizer_config,
 )
-from tests.model_fixtures import (
-    tokenizer,
-    vocabulary,
-    vectorizer
-)
+from tests.model_fixtures import tokenizer, vocabulary, vectorizer
 
 
 def test_tokenizer(
@@ -31,12 +25,10 @@ def test_tokenizer(
 def test_vocabulary(
     vocabulary: Vocabulary,
     expected_tokens: list[list[str]],
-    expected_freqs: list[float]
+    expected_freqs: list[float],
 ) -> None:
     vocabulary.build(expected_tokens)
-    assert np.alltrue(
-        vocabulary.get_freqs() == expected_freqs
-    )
+    assert np.alltrue(vocabulary.get_freqs() == expected_freqs)
 
 
 def test_vectorizer(
