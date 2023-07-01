@@ -79,3 +79,8 @@ class Vocabulary:
                 for text in tokenized_texts
             ]
         raise AttributeError("Vocabulary is not built yet!")
+
+    def __len__(self) -> int:
+        if self.word2id is not None:
+            return len(self.word2id)
+        return 0
