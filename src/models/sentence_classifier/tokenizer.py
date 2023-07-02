@@ -3,36 +3,46 @@ import re
 
 import numpy as np
 
+from src.utils import check_is_fitted
+
 
 class Tokenizer:
 
     TOKEN_RE = re.compile(r"[\w\d]+")
 
-    def __init__(self, min_token_size=4):
+    def __init__(self, min_token_size: int = 4):
         self.min_token_size = min_token_size
 
-    def __call__(self, text):
+    def __call__(self, text: str) -> list[str]:
         text = text.lower()
         all_tokens = self.TOKEN_RE.findall(text)
         return [token for token in all_tokens if len(token) >= self.min_token_size]
 
-    def tokenize_corpus(self, texts):
+    def tokenize_corpus(self, texts: list[str]) -> list[list[str]]:
         return [self(text) for text in texts]
 
 
 class Vocabulary:
     def __init__(
-        self, max_size=1_000_000, max_doc_freq=0.8, min_count=5, pad_word=None
+        self,
+        max_size: int = 1_000_000,
+        max_doc_freq: float = 0.8,
+        min_count: int = 5,
+        pad_word: str | None = None,
+        word2id: dict[str, int] | None = None,
+        id2word: dict[int, str] | None = None,
+        word2freq: dict[str, float] | None = None,
     ):
         self.max_size = max_size
         self.max_doc_freq = max_doc_freq
         self.min_count = min_count
         self.pad_word = pad_word
-        self.word2id = None
-        self.word2freq = None
+        self.word2id = word2id
+        self.id2word = id2word
+        self.word2freq = word2freq
 
-    def build(self, tokenized_texts):
-        word_counts = collections.defaultdict(int)
+    def build(self, tokenized_texts: list[list[str]]) -> None:
+        word_counts = collections.defaultdict(int)  # type: dict[str, int]
         _doc_n = 0
         for _doc_n, txt in enumerate(tokenized_texts, start=1):
             unique_text_tokens = set(txt)
@@ -57,18 +67,37 @@ class Vocabulary:
 
         self.word2id = {word: i for i, (word, _) in enumerate(sorted_word_counts)}
 
-        self.word2freq = np.array(
-            [cnt / _doc_n for _, cnt in sorted_word_counts], dtype="float32"
-        )
+        self.id2word = {i: word for word, i in self.word2id.items()}
 
-    def texts_to_token_ids(self, tokenized_texts):
+        self.word2freq = {word: cnt / _doc_n for word, cnt in sorted_word_counts}
+
+    @check_is_fitted(["word2freq"])
+    def get_freqs(self) -> np.ndarray:
+        return np.array(list(self.word2freq.values()), dtype="float32")  # type: ignore
+
+    @check_is_fitted(["word2id"])
+    def tokenized_corpus_to_token_ids(
+        self, tokenized_texts: list[list[str]]
+    ) -> list[list[int]]:
         return [
-            [self.word2id[token] for token in text if token in self.word2id]
+            [
+                self.word2id[token]  # type: ignore
+                for token in text
+                if token in self.word2id  # type: ignore
+            ]
             for text in tokenized_texts
         ]
 
-    def get_sorted_token_freq(self):
-        word_df = [
-            (key, freq) for key, freq in zip(self.word2id.keys(), self.word2freq)
-        ]
-        return sorted(word_df, reverse=True, key=lambda x: (x[1], x[0]))
+    @check_is_fitted(["word2id"])
+    def __len__(self) -> int:
+        return len(self.word2id)  # type: ignore
+
+    @check_is_fitted(["word2id"])
+    def __contains__(self, item: str) -> bool:
+        return item in self.word2id  # type: ignore
+
+    @check_is_fitted(["id2word", "word2id"])
+    def __getitem__(self, key: int | str) -> str | int:
+        if isinstance(key, int):
+            return self.id2word[key]  # type: ignore
+        return self.word2id[key]  # type: ignore

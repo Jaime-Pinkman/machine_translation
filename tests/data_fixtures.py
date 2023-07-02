@@ -1,8 +1,4 @@
-import pytest
-
-
-@pytest.fixture
-def test_data():
+def test_data() -> list[str]:
     return [
         "Казнить нельзя, помиловать. Нельзя наказывать.",
         "Казнить, нельзя помиловать. Нельзя освободить.",
@@ -11,8 +7,7 @@ def test_data():
     ]
 
 
-@pytest.fixture
-def expected_tokens():
+def expected_tokens() -> list[list[str]]:
     return [
         ["казнить", "нельзя", "помиловать", "нельзя", "наказывать"],
         ["казнить", "нельзя", "помиловать", "нельзя", "освободить"],
@@ -21,42 +16,11 @@ def expected_tokens():
     ]
 
 
-COMBINATIONS = [
-    ("bin", None, False),
-    ("bin", None, True),
-    ("bin", "minmax", False),
-    ("bin", "minmax", True),
-    ("bin", "std", False),
-    ("bin", "std", True),
-    ("idf", None, False),
-    ("idf", None, True),
-    ("idf", "minmax", False),
-    ("idf", "minmax", True),
-    ("idf", "std", False),
-    ("idf", "std", True),
-    ("ltfidf", None, False),
-    ("ltfidf", None, True),
-    ("ltfidf", "minmax", False),
-    ("ltfidf", "minmax", True),
-    ("ltfidf", "std", False),
-    ("ltfidf", "std", True),
-    ("tf", None, False),
-    ("tf", None, True),
-    ("tf", "minmax", False),
-    ("tf", "minmax", True),
-    ("tf", "std", False),
-    ("tf", "std", True),
-    ("tfidf", None, False),
-    ("tfidf", None, True),
-    ("tfidf", "minmax", False),
-    ("tfidf", "minmax", True),
-    ("tfidf", "std", False),
-    ("tfidf", "std", True),
-]
+def expected_freqs() -> list[float]:
+    return [0.75, 0.75, 0.5, 0.5, 0.25, 0.25, 0.25]
 
 
-@pytest.fixture
-def expected_outputs():
+def expected_outputs() -> dict[tuple[str, str | None], list[list[float]]]:
     return {
         ("bin", None): [
             [1.0, 1.0, 0.0, 1.0, 0.0, 0.0, 1.0],
