@@ -32,7 +32,8 @@ class ScaleType(Enum):
     NONE = None
 
 
-embedding_modes = [e.value for e in EmbeddingMode]
-scale_types = [s.value for s in ScaleType]
-
-COMBINATIONS = list(product(embedding_modes, scale_types, [False, True]))
+COMBINATIONS = list(
+    product(
+        [e.value for e in EmbeddingMode], [s.value for s in ScaleType], [False, True]
+    )
+)
