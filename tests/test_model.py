@@ -1,6 +1,6 @@
 import torch
 
-from src.models import Transformer
+from src.models.transformers import Transformer
 
 
 def test_output_shape():

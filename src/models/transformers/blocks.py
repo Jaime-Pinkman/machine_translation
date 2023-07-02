@@ -1,13 +1,10 @@
-import torch
 from torch import nn
 
 from .multihead_attention import SelfAttention
 
 
-class TransformerBlock(nn.Module):  # type: ignore
-    def __init__(
-        self, embed_size: int, heads: int, forward_expansion: int, dropout: int
-    ):
+class TransformerBlock(nn.Module):
+    def __init__(self, embed_size, heads, forward_expansion, dropout):
         super(TransformerBlock, self).__init__()
         self.attention = SelfAttention(embed_size, heads)
         self.norm1 = nn.LayerNorm(embed_size)
@@ -20,13 +17,7 @@ class TransformerBlock(nn.Module):  # type: ignore
         )
         self.dropout = nn.Dropout(dropout)
 
-    def forward(
-        self,
-        values: torch.Tensor,
-        keys: torch.Tensor,
-        query: torch.Tensor,
-        mask: torch.Tensor | None = None,
-    ) -> torch.Tensor:
+    def forward(self, values, keys, query, mask=None):
         attention = self.attention(values, keys, query, mask)
         x = self.dropout(self.norm1(attention + query))
         forward = self.ff(x)
@@ -34,10 +25,8 @@ class TransformerBlock(nn.Module):  # type: ignore
         return out
 
 
-class DecoderBlock(nn.Module):  # type: ignore
-    def __init__(
-        self, embed_size: int, heads: int, forward_expansion: int, dropout: int
-    ):
+class DecoderBlock(nn.Module):
+    def __init__(self, embed_size, heads, forward_expansion, dropout):
         super(DecoderBlock, self).__init__()
         self.attention = SelfAttention(embed_size, heads)
         self.norm = nn.LayerNorm(embed_size)
@@ -46,14 +35,7 @@ class DecoderBlock(nn.Module):  # type: ignore
         )
         self.dropout = nn.Dropout(dropout)
 
-    def forward(
-        self,
-        x: torch.Tensor,
-        value: torch.Tensor,
-        key: torch.Tensor,
-        src_mask: torch.Tensor,
-        trg_mask: torch.Tensor,
-    ) -> torch.Tensor:
+    def forward(self, x, value, key, src_mask, trg_mask):
         attention = self.attention(x, x, x, trg_mask)
         query = self.dropout(self.norm(attention + x))
         out = self.transformer_block(value, key, query, src_mask)

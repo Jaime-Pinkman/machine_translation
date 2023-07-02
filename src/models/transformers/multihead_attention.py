@@ -2,8 +2,8 @@ import torch
 from torch import nn
 
 
-class SelfAttention(nn.Module):  # type: ignore
-    def __init__(self, embed_size: int, heads: int = 8):
+class SelfAttention(nn.Module):
+    def __init__(self, embed_size, heads=8):
         super(SelfAttention, self).__init__()
         self.embed_size = embed_size
         self.heads = heads
@@ -16,13 +16,7 @@ class SelfAttention(nn.Module):  # type: ignore
         self.queries = nn.Linear(self.head_dim, self.head_dim, bias=False)
         self.fc_out = nn.Linear(self.heads * self.head_dim, self.embed_size)
 
-    def forward(
-        self,
-        values: torch.Tensor,
-        keys: torch.Tensor,
-        query: torch.Tensor,
-        mask: torch.Tensor | None = None,
-    ) -> torch.Tensor:
+    def forward(self, values, keys, query, mask=None):
         N = query.shape[0]
         value_len, key_len, query_len = values.shape[1], keys.shape[1], query.shape[1]
 
