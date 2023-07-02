@@ -9,7 +9,7 @@ ENV/
 
 # Ignore certain directories
 data/
-notebooks/
+drafts/
 
 # Ignore compiled Python files
 *.pyc

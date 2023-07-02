@@ -4,17 +4,17 @@ from torch import nn
 from .blocks import TransformerBlock
 
 
-class Encoder(nn.Module):
+class Encoder(nn.Module):  # type: ignore
     def __init__(
         self,
-        src_vocab_size,
-        embed_size,
-        num_layers,
-        heads,
-        forward_expansion,
-        dropout,
-        device,
-        max_length,
+        src_vocab_size: int,
+        embed_size: int,
+        num_layers: int,
+        heads: int,
+        forward_expansion: int,
+        dropout: int,
+        device: str,
+        max_length: int,
     ):
         super(Encoder, self).__init__()
         self.embed_size = embed_size
@@ -31,7 +31,7 @@ class Encoder(nn.Module):
         )
         self.dropout = nn.Dropout(dropout)
 
-    def forward(self, x, mask):
+    def forward(self, x: torch.Tensor, mask: torch.Tensor) -> torch.Tensor:
         N, seq_length = x.shape
         positions = torch.arange(0, seq_length).expand(N, seq_length).to(self.device)
 
