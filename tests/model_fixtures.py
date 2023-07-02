@@ -1,27 +1,24 @@
 import pytest
 
-from config import VocabularyConfig, TokenizerConfig, COMBINATIONS
+from config import VocabularyConfig, TokenizerConfig
 from src.models import Tokenizer, Vocabulary, VectorizerFactory, BaseVectorizer
 
 
-@pytest.fixture
-def tokenizer(tokenizer_config: TokenizerConfig) -> Tokenizer:
-    tknzr = Tokenizer(min_token_size=tokenizer_config.min_token_size)
+def tokenizer() -> Tokenizer:
+    tknzr = Tokenizer(min_token_size=TokenizerConfig.min_token_size)
     return tknzr
 
 
-@pytest.fixture
-def vocabulary(vocab_config: VocabularyConfig) -> Vocabulary:
+def vocabulary() -> Vocabulary:
     vocab = Vocabulary(
-        max_size=vocab_config.max_size,
-        max_doc_freq=vocab_config.max_doc_freq,
-        min_count=vocab_config.min_count,
-        pad_word=vocab_config.pad_word,
+        max_size=VocabularyConfig.max_size,
+        max_doc_freq=VocabularyConfig.max_doc_freq,
+        min_count=VocabularyConfig.min_count,
+        pad_word=VocabularyConfig.pad_word,
     )
     return vocab
 
 
-@pytest.fixture(params=COMBINATIONS)
 def vectorizer(
     request: pytest.FixtureRequest,
     expected_tokens: list[list[str]],

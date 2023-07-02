@@ -1,44 +1,37 @@
 import numpy as np
 
 from src.models import Tokenizer, Vocabulary, BaseVectorizer
-from tests.data_fixtures import (
-    expected_outputs,
-    expected_tokens,
-    expected_freqs,
-    test_data,
-    vocab_config,
-    tokenizer_config,
-)
-from tests.model_fixtures import tokenizer, vocabulary, vectorizer
 
 
 def test_tokenizer(
-    tokenizer: Tokenizer,
-    test_data: list[str],
-    expected_tokens: list[list[str]],
+    tokenizer_fixture: Tokenizer,
+    test_data_fixture: list[str],
+    expected_tokens_fixture: list[list[str]],
 ) -> None:
-    tokenized_data = tokenizer.tokenize_corpus(test_data)
-    assert tokenized_data == expected_tokens
+    tokenized_data = tokenizer_fixture.tokenize_corpus(test_data_fixture)
+    assert tokenized_data == expected_tokens_fixture
 
 
 def test_vocabulary(
-    vocabulary: Vocabulary,
-    expected_tokens: list[list[str]],
-    expected_freqs: list[float],
+    vocabulary_fixture: Vocabulary,
+    expected_tokens_fixture: list[list[str]],
+    expected_freqs_fixture: list[float],
 ) -> None:
-    vocabulary.build(expected_tokens)
-    assert np.alltrue(vocabulary.get_freqs() == expected_freqs)
+    vocabulary_fixture.build(expected_tokens_fixture)
+    assert np.alltrue(vocabulary_fixture.get_freqs() == expected_freqs_fixture)
 
 
 def test_vectorizer(
-    vectorizer: BaseVectorizer,
-    tokenizer: Tokenizer,
-    test_data: list[str],
-    expected_outputs: dict[tuple[str, str | None], list[list[float]]],
+    vectorizer_fixture: BaseVectorizer,
+    tokenizer_fixture: Tokenizer,
+    test_data_fixture: list[str],
+    expected_outputs_fixture: dict[tuple[str, str | None], list[list[float]]],
 ) -> None:
-    tokenized_data = tokenizer.tokenize_corpus(test_data)
-    pred_output = vectorizer.vectorize(tokenized_data)
-    true_output = expected_outputs[(vectorizer.mode, vectorizer.scale)]
+    tokenized_data = tokenizer_fixture.tokenize_corpus(test_data_fixture)
+    pred_output = vectorizer_fixture.vectorize(tokenized_data)
+    true_output = expected_outputs_fixture[
+        (vectorizer_fixture.mode, vectorizer_fixture.scale)
+    ]
     if not isinstance(pred_output, np.ndarray):
         pred_output = pred_output.todense()
     assert np.allclose(pred_output, true_output, atol=0.01)

@@ -1,26 +1,3 @@
-import pytest
-
-from config import VocabularyConfig, TokenizerConfig
-
-
-@pytest.fixture
-def vocab_config() -> VocabularyConfig:
-    return VocabularyConfig(
-        max_size=10000,
-        max_doc_freq=1.0,
-        min_count=1,
-        pad_word=None,
-    )
-
-
-@pytest.fixture
-def tokenizer_config() -> TokenizerConfig:
-    return TokenizerConfig(
-        min_token_size=0,
-    )
-
-
-@pytest.fixture
 def test_data() -> list[str]:
     return [
         "Казнить нельзя, помиловать. Нельзя наказывать.",
@@ -30,7 +7,6 @@ def test_data() -> list[str]:
     ]
 
 
-@pytest.fixture
 def expected_tokens() -> list[list[str]]:
     return [
         ["казнить", "нельзя", "помиловать", "нельзя", "наказывать"],
@@ -40,12 +16,10 @@ def expected_tokens() -> list[list[str]]:
     ]
 
 
-@pytest.fixture
 def expected_freqs() -> list[float]:
     return [0.75, 0.75, 0.5, 0.5, 0.25, 0.25, 0.25]
 
 
-@pytest.fixture
 def expected_outputs() -> dict[tuple[str, str | None], list[list[float]]]:
     return {
         ("bin", None): [
