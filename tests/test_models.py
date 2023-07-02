@@ -1,7 +1,6 @@
 import numpy as np
 
-from src.models.sentence_classifier.tokenizer import Tokenizer, Vocabulary
-from src.models.sentence_classifier.vectorizer import BaseVectorizer
+from src.models import Tokenizer, Vocabulary, BaseVectorizer
 from tests.data_fixtures import (
     expected_outputs,
     expected_tokens,

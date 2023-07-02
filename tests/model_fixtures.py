@@ -1,8 +1,7 @@
 import pytest
 
 from config import VocabularyConfig, TokenizerConfig, COMBINATIONS
-from src.models.sentence_classifier.tokenizer import Tokenizer, Vocabulary
-from src.models.sentence_classifier.vectorizer import VectorizerFactory, BaseVectorizer
+from src.models import Tokenizer, Vocabulary, VectorizerFactory, BaseVectorizer
 
 
 @pytest.fixture
