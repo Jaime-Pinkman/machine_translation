@@ -4,17 +4,17 @@ from torch import nn
 from .blocks import DecoderBlock
 
 
-class Decoder(nn.Module):
+class Decoder(nn.Module):  # type: ignore
     def __init__(
         self,
-        trg_vocab_size,
-        embed_size,
-        num_layers,
-        heads,
-        forward_expansion,
-        dropout,
-        device,
-        max_length,
+        trg_vocab_size: int,
+        embed_size: int,
+        num_layers: int,
+        heads: int,
+        forward_expansion: int,
+        dropout: int,
+        device: str,
+        max_length: int,
     ):
         super(Decoder, self).__init__()
         self.embed_size = embed_size
@@ -32,7 +32,13 @@ class Decoder(nn.Module):
         self.fc_out = nn.Linear(embed_size, trg_vocab_size)
         self.dropout = nn.Dropout(dropout)
 
-    def forward(self, x, enc_out, src_mask, trg_mask):
+    def forward(
+        self,
+        x: torch.Tensor,
+        enc_out: torch.Tensor,
+        src_mask: torch.Tensor,
+        trg_mask: torch.Tensor,
+    ) -> torch.Tensor:
         N, seq_length = x.shape
         positions = torch.arange(0, seq_length).expand(N, seq_length).to(self.device)
         x = self.dropout((self.word_embedding(x) + self.position_embedding(positions)))
