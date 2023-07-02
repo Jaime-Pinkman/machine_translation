@@ -4,28 +4,21 @@ import numpy as np
 from scipy import sparse
 
 from config import EmbeddingMode, ScaleType
-from src.models.sentence_classifier.tokenizer import Vocabulary, Tokenizer
+from src.models.sentence_classifier.tokenizer import Vocabulary
 
 
 class BaseVectorizer(ABC):
     def __init__(
         self,
-        tokenizer: Tokenizer,
         vocabulary: Vocabulary,
         mode: str = "ltfidf",
         scale: str = "minmax",
     ):
-        self.tokenizer = tokenizer
         self.vocab = vocabulary
         assert mode in {"ltfidf", "tfidf", "idf", "tf", "bin"}
         assert scale in {"minmax", "std", None}
         self.mode = mode
         self.scale = scale
-
-    def fit(self, texts: list[str]) -> None:
-        if self.vocab.word2id is None or self.vocab.word2freq is None:
-            tokenized_texts = self.tokenizer.tokenize_corpus(texts)
-            self.vocab.build(tokenized_texts)
 
     @abstractmethod
     def _initialize_result_array(
@@ -45,10 +38,11 @@ class BaseVectorizer(ABC):
     ) -> np.ndarray | sparse._dok.dok_matrix:
         pass
 
-    def transform(self, texts: list[str]) -> np.ndarray | sparse._dok.dok_matrix:
+    def vectorize(
+        self, tokenized_texts: list[list[str]]
+    ) -> np.ndarray | sparse._dok.dok_matrix:
         if self.vocab.word2id is None or self.vocab.word2freq is None:
             raise ValueError("Vectorizer has not been fit yet.")
-        tokenized_texts = self.tokenizer.tokenize_corpus(texts)
         result = self._initialize_result_array(
             len(tokenized_texts), len(self.vocab.word2id)
         )
@@ -164,17 +158,15 @@ class VectorizerFactory:
         self.scale = scale
         self.use_sparse = use_sparse
 
-    def get_vectorizer(self, tokenizer: Tokenizer) -> BaseVectorizer:
+    def get_vectorizer(self) -> BaseVectorizer:
         if self.use_sparse:
             return SparseVectorizer(
-                tokenizer=tokenizer,
                 vocabulary=self.vocabulary,
                 mode=self.mode,
                 scale=self.scale,
             )
         else:
             return DenseVectorizer(
-                tokenizer=tokenizer,
                 vocabulary=self.vocabulary,
                 mode=self.mode,
                 scale=self.scale,
