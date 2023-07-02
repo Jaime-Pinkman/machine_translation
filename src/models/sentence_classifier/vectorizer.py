@@ -5,6 +5,7 @@ from scipy import sparse
 
 from config import EmbeddingMode, ScaleType
 from src.models.sentence_classifier.tokenizer import Vocabulary
+from src.utils import check_is_fitted
 
 
 class BaseVectorizer(ABC):
@@ -38,19 +39,18 @@ class BaseVectorizer(ABC):
     ) -> np.ndarray | sparse._dok.dok_matrix:
         pass
 
+    @check_is_fitted(["vocab.word2id", "vocab.word2freq"])
     def vectorize(
         self, tokenized_texts: list[list[str]]
     ) -> np.ndarray | sparse._dok.dok_matrix:
-        if self.vocab.word2id is None or self.vocab.word2freq is None:
-            raise ValueError("Vectorizer has not been fit yet.")
         result = self._initialize_result_array(
-            len(tokenized_texts), len(self.vocab.word2id)
+            len(tokenized_texts), len(self.vocab.word2id)  # type: ignore
         )
 
         for text_i, text in enumerate(tokenized_texts):
             for token in text:
-                if token in self.vocab.word2id:
-                    result[text_i, self.vocab.word2id[token]] += 1
+                if token in self.vocab.word2id:  # type: ignore
+                    result[text_i, self.vocab.word2id[token]] += 1  # type: ignore
 
         result = self._apply_mode(result)
 

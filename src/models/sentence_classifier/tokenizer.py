@@ -3,6 +3,8 @@ import re
 
 import numpy as np
 
+from src.utils import check_is_fitted
+
 
 class Tokenizer:
 
@@ -28,6 +30,7 @@ class Vocabulary:
         min_count: int = 5,
         pad_word: str | None = None,
         word2id: dict[str, int] | None = None,
+        id2word: dict[int, str] | None = None,
         word2freq: dict[str, float] | None = None,
     ):
         self.max_size = max_size
@@ -35,6 +38,7 @@ class Vocabulary:
         self.min_count = min_count
         self.pad_word = pad_word
         self.word2id = word2id
+        self.id2word = id2word
         self.word2freq = word2freq
 
     def build(self, tokenized_texts: list[list[str]]) -> None:
@@ -63,24 +67,37 @@ class Vocabulary:
 
         self.word2id = {word: i for i, (word, _) in enumerate(sorted_word_counts)}
 
+        self.id2word = {i: word for word, i in self.word2id.items()}
+
         self.word2freq = {word: cnt / _doc_n for word, cnt in sorted_word_counts}
 
+    @check_is_fitted(["word2freq"])
     def get_freqs(self) -> np.ndarray:
-        if self.word2freq is not None:
-            return np.array(list(self.word2freq.values()), dtype="float32")
-        raise AttributeError("Vocabulary is not built yet!")
+        return np.array(list(self.word2freq.values()), dtype="float32")  # type: ignore
 
+    @check_is_fitted(["word2id"])
     def tokenized_corpus_to_token_ids(
         self, tokenized_texts: list[list[str]]
     ) -> list[list[int]]:
-        if self.word2id is not None:
-            return [
-                [self.word2id[token] for token in text if token in self.word2id]
-                for text in tokenized_texts
+        return [
+            [
+                self.word2id[token]  # type: ignore
+                for token in text
+                if token in self.word2id  # type: ignore
             ]
-        raise AttributeError("Vocabulary is not built yet!")
+            for text in tokenized_texts
+        ]
 
+    @check_is_fitted(["word2id"])
     def __len__(self) -> int:
-        if self.word2id is not None:
-            return len(self.word2id)
-        return 0
+        return len(self.word2id)  # type: ignore
+
+    @check_is_fitted(["word2id"])
+    def __contains__(self, item: str) -> bool:
+        return item in self.word2id  # type: ignore
+
+    @check_is_fitted(["id2word", "word2id"])
+    def __getitem__(self, key: int | str) -> str | int:
+        if isinstance(key, int):
+            return self.id2word[key]  # type: ignore
+        return self.word2id[key]  # type: ignore
