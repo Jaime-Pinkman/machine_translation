@@ -25,6 +25,7 @@ pandas = "^2.0.2"
 nltk = "^3.8.1"
 matplotlib = "^3.7.1"
 pytorch-lightning = "^2.0.5"
+tensorboard = "^2.13.0"
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
