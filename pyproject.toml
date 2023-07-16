@@ -14,7 +14,7 @@ pytest = "^7.2.1"
 torch = [
     {markers = "sys_platform == 'darwin'", version="^1.13.1"},
     {markers = "sys_platform == 'linux' and platform_machine == 'arm64'", url="https://download.pytorch.org/whl/torch-1.13.0-cp310-cp310-manylinux2014_aarch64.whl"},
-    {markers = "sys_platform == 'linux' and platform_machine == 'x86_64'", url="https://download.pytorch.org/whl/cpu/torch-1.13.0%2Bcpu-cp310-cp310-linux_x86_64.whl"},
+    {markers = "sys_platform == 'linux' and platform_machine == 'x86_64'", version="^1.12.1"},
 ]
 setuptools = "^67.4.0"
 ipykernel = "^6.21.2"
@@ -24,9 +24,15 @@ scikit-learn = "^1.2.2"
 pandas = "^2.0.2"
 nltk = "^3.8.1"
 matplotlib = "^3.7.1"
+pytorch-lightning = "^2.0.5"
+tensorboard = "^2.13.0"
+pyyaml = "^6.0"
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
+
+[tool.poe.tasks]
+force-cuda11 = "python -m pip install torch==1.12.1+cu113 -f https://download.pytorch.org/whl/torch_stable.html"
 
 [tool.flake8]
 ignore = ['E203', 'W503']

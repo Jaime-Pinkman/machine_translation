@@ -8,7 +8,8 @@ env/
 ENV/
 
 # Ignore certain directories
-data/
+./data/
+experiments/
 drafts/
 
 # Ignore compiled Python files
