@@ -8,11 +8,9 @@ env/
 ENV/
 
 # Ignore certain directories
-data/raw
-data/interim
-data/processed
-experiments/
+data/
 drafts/
+experiments/
 
 # Ignore compiled Python files
 *.pyc
