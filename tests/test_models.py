@@ -1,6 +1,6 @@
 import numpy as np
 
-from src.models import Tokenizer, Vocabulary, BaseVectorizer
+from text_classifier.data.text_processing import Tokenizer, Vocabulary, BaseVectorizer
 
 
 def test_tokenizer(

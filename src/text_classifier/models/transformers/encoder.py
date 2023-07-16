@@ -20,12 +20,14 @@ class Encoder(nn.Module):  # type: ignore
         self.embed_size = embed_size
         self.num_layers = num_layers
         self.device = device
-        self.word_embedding = nn.Embedding(src_vocab_size, embed_size)
-        self.position_embedding = nn.Embedding(max_length, embed_size)
+        self.word_embedding = nn.Embedding(src_vocab_size, embed_size).to(device)
+        self.position_embedding = nn.Embedding(max_length, embed_size).to(device)
 
         self.layers = nn.ModuleList(
             [
-                TransformerBlock(embed_size, heads, forward_expansion, dropout)
+                TransformerBlock(embed_size, heads, forward_expansion, dropout).to(
+                    device
+                )
                 for _ in range(self.num_layers)
             ]
         )

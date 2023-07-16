@@ -8,7 +8,9 @@ env/
 ENV/
 
 # Ignore certain directories
-./data/
+data/raw
+data/interim
+data/processed
 experiments/
 drafts/
 

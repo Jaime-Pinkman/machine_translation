@@ -3,7 +3,7 @@ import re
 
 import numpy as np
 
-from src.utils import check_is_fitted
+from text_classifier.utils import check_is_fitted
 
 
 class Tokenizer:

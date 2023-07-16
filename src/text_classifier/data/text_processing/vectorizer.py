@@ -3,9 +3,9 @@ from abc import ABC, abstractmethod
 import numpy as np
 from scipy import sparse
 
-from config import EmbeddingMode, ScaleType
-from src.models.sentence_classifier.tokenizer import Vocabulary
-from src.utils import check_is_fitted
+from .embedding_enums import EmbeddingMode, ScaleType
+from .tokenizer import Vocabulary
+from text_classifier.utils import check_is_fitted
 
 
 class BaseVectorizer(ABC):

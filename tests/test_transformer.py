@@ -1,6 +1,6 @@
 import torch
 
-from src.models import Transformer
+from text_classifier.models import Transformer
 
 
 def test_output_shape():

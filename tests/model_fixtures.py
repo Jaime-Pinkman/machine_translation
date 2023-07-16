@@ -1,7 +1,15 @@
 import pytest
 
-from config import VocabularyConfig, TokenizerConfig
-from src.models import Tokenizer, Vocabulary, VectorizerFactory, BaseVectorizer
+from text_classifier.data.text_processing.config import (
+    VocabularyConfig,
+    TokenizerConfig,
+)
+from text_classifier.data.text_processing import (
+    Tokenizer,
+    Vocabulary,
+    VectorizerFactory,
+    BaseVectorizer,
+)
 
 
 def tokenizer() -> Tokenizer:

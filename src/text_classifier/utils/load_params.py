@@ -1,5 +1,5 @@
 import yaml
-from src.config.config import default_params
+from text_classifier.config.config import default_params
 
 
 def load_params(config_file=None):
