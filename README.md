@@ -22,12 +22,17 @@ To set up the project, follow these steps:
     cd machine_translation
     ```
 
-3. Add the `src` directory to your `PYTHONPATH` environment variable. This allows Python to import the project packages. Run the following command:
+3. Install the project dependencies:
 
     ```bash
-    export PYTHONPATH="${PYTHONPATH}:$(pwd)/src"
+    poetry install
     ```
 
-    This command adds the current project's `src` directory to your `PYTHONPATH`.
+This will install all the necessary dependencies listed in the `pyproject.toml` file and ensure that the `text_classifier` package is discoverable by Python.
 
-Please note that this setting will only persist for the duration of your current shell session. If you start a new session, you will need to run the command again.
+## Running Tests
+
+To run the tests, navigate to the `tests` directory and run:
+
+```bash
+pytest
