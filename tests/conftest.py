@@ -1,6 +1,7 @@
 import pytest
 
-from src.models import Tokenizer, Vocabulary, BaseVectorizer
+from text_classifier.data.text_processing import Tokenizer, Vocabulary, BaseVectorizer
+from text_classifier.data.text_processing.embedding_enums import COMBINATIONS
 from tests.data_fixtures import (
     expected_outputs,
     expected_tokens,
@@ -8,7 +9,6 @@ from tests.data_fixtures import (
     test_data,
 )
 from tests.model_fixtures import tokenizer, vocabulary, vectorizer
-from config import COMBINATIONS
 
 
 @pytest.fixture
