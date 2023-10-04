@@ -1,1 +1,1 @@
-default_params = {"learning_rate": 3e-4, "batch_size": 32, "num_epochs": 50}
+default_params = {"learning_rate": 3e-3, "batch_size": 32, "num_epochs": 30}

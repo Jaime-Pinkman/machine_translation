@@ -7,9 +7,4 @@ def load_params(config_file=None):
         return default_params
     else:
         with open(config_file, "r") as file:
-            params = yaml.safe_load(file)
-        return {
-            "learning_rate": float(params["learning_rate"]),
-            "batch_size": int(params["batch_size"]),
-            "num_epochs": int(params["num_epochs"]),
-        }
+            return yaml.safe_load(file)
